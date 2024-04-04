@@ -113,6 +113,7 @@ function provisioning_start() {
     provisioning_get_models \
         "${WORKSPACE}/storage/stable_diffusion/models/esrgan" \
         "${ESRGAN_MODELS[@]}"
+    provisioning_get_ipadapter_models
     provisioning_print_end
 }
 
@@ -163,6 +164,50 @@ function provisioning_get_models() {
         provisioning_download "${url}" "${dir}"
         printf "\n"
     done
+}
+
+function provisioning_get_ipadapter_models() {    
+    # Set the base directory
+    base_dir=""${WORKSPACE}/storage/stable_diffusion/models"
+    
+    # Create the necessary directories if they don't exist
+    mkdir -p "$base_dir/clip_vision"
+    mkdir -p "$base_dir/ipadapter"
+    mkdir -p "$base_dir/loras"
+    
+    # Download and rename the CLIP vision models
+    provisioning_download "https://huggingface.co/h94/IP-Adapter/resolve/main/models/image_encoder/model.safetensors" "clip_vision/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/image_encoder/model.safetensors" "clip_vision/CLIP-ViT-bigG-14-laion2B-39B-b160k.safetensors"
+    
+    # Download the IPAdapter models
+    provisioning_download "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15.safetensors" "ipadapter/ip-adapter_sd15.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_light_v11.bin" "ipadapter/ip-adapter_sd15_light_v11.bin"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter-plus_sd15.safetensors" "ipadapter/ip-adapter-plus_sd15.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter-plus-face_sd15.safetensors" "ipadapter/ip-adapter-plus-face_sd15.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter-full-face_sd15.safetensors" "ipadapter/ip-adapter-full-face_sd15.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_vit-G.safetensors" "ipadapter/ip-adapter_sd15_vit-G.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter_sdxl_vit-h.safetensors" "ipadapter/ip-adapter_sdxl_vit-h.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors" "ipadapter/ip-adapter-plus_sdxl_vit-h.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus-face_sdxl_vit-h.safetensors" "ipadapter/ip-adapter-plus-face_sdxl_vit-h.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter_sdxl.safetensors" "ipadapter/ip-adapter_sdxl.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15_light.safetensors" "ipadapter/ip-adapter_sd15_light.safetensors"
+    
+    # Download the FaceID models
+    provisioning_download "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid_sd15.bin" "ipadapter/ip-adapter-faceid_sd15.bin"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sd15.bin" "ipadapter/ip-adapter-faceid-plusv2_sd15.bin"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-portrait-v11_sd15.bin" "ipadapter/ip-adapter-faceid-portrait-v11_sd15.bin"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid_sdxl.bin" "ipadapter/ip-adapter-faceid_sdxl.bin"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sdxl.bin" "ipadapter/ip-adapter-faceid-plusv2_sdxl.bin"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-portrait_sdxl.bin" "ipadapter/ip-adapter-faceid-portrait_sdxl.bin"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plus_sd15.bin" "ipadapter/ip-adapter-faceid-plus_sd15.bin"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-portrait-v11_sd15.bin" "ipadapter/ip-adapter-faceid-portrait_sd15.bin"
+    
+    # Download the LoRA models
+    provisioning_download "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid_sd15_lora.safetensors" "loras/ip-adapter-faceid_sd15_lora.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sd15_lora.safetensors" "loras/ip-adapter-faceid-plusv2_sd15_lora.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid_sdxl_lora.safetensors" "loras/ip-adapter-faceid_sdxl_lora.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sdxl_lora.safetensors" "loras/ip-adapter-faceid-plusv2_sdxl_lora.safetensors"
+    provisioning_download "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plus_sd15_lora.safetensors" "loras/ip-adapter-faceid-plus_sd15_lora.safetensors"
 }
 
 function provisioning_print_header() {
