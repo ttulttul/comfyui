@@ -15,36 +15,22 @@ Common features and options are documented in the [base wiki](https://github.com
 
 #### Version Tags
 
-The `:latest` tag points to `:latest-cuda`
+The `:latest` tag points to `:latest-cuda` and will relate to a stable and tested version.  There may be more recent builds
 
 Tags follow these patterns:
 
 ##### _CUDA_
-- `:pytorch-[pytorch-version]-py[python-version]-cuda-[x.x.x]-base-[ubuntu-version]`
-
-- `:latest-cuda` &rarr; `:pytorch-2.2.0-py3.10-cuda-11.8.0-base-22.04`
-
-- `:latest-cuda-jupyter` &rarr; `:jupyter-pytorch-2.2.0-py3.10-cuda-11.8.0-base-22.04`
+- `:cuda-[x.x.x-base|runtime]-[ubuntu-version]`
 
 ##### _ROCm_
-- `:pytorch-[pytorch-version]-py[python-version]-rocm-[x.x.x]-runtime-[ubuntu-version]`
-
-- `:latest-rocm` &rarr; `:pytorch-2.2.0-py3.10-rocm-5.7-runtime-22.04`
-
-- `:latest-rocm-jupyter` &rarr; `:jupyter-pytorch-2.2.0-py3.10-rocm-5.7-runtime-22.04`
+- `:rocm-[x.x.x-runtime]-[ubuntu-version]`
 
 ##### _CPU_
-- `:pytorch-[pytorch-version]-py[python-version]-ubuntu-[ubuntu-version]`
+- `:cpu-[ubuntu-version]`
 
-- `:latest-cpu` &rarr; `:pytorch-2.2.0-py3.10-cpu-22.04` 
-
-- `:latest-cpu-jupyter` &rarr; `:jupyter-pytorch-2.2.0-py3.10-cpu-22.04` 
 
 Browse [here](https://github.com/ai-dock/comfyui/pkgs/container/comfyui) for an image suitable for your target environment.
 
-Supported Python versions: `3.11`, `3.10`
-
-Supported Pytorch versions: `2.2.0`, `2.1.2`
 
 Supported Platforms: `NVIDIA CUDA`, `AMD ROCm`, `CPU`
 
@@ -53,8 +39,8 @@ Supported Platforms: `NVIDIA CUDA`, `AMD ROCm`, `CPU`
 
 | Variable                 | Description |
 | ------------------------ | ----------- |
-| `AUTO_UPDATE`            | Update ComfyUI on startup (default `true`) |
-| `COMFYUI_BRANCH`         | ComfyUI branch/commit hash (default `master`) |
+| `AUTO_UPDATE`            | Update ComfyUI on startup (default `false`) |
+| `COMFYUI_BRANCH`         | ComfyUI branch/commit hash for auto update (default `master`) |
 | `COMFYUI_FLAGS`          | Startup flags. eg. `--gpu-only --highvram` |
 | `COMFYUI_PORT_HOST`      | ComfyUI interface port (default `8188`) |
 | `COMFYUI_URL`            | Override `$DIRECT_ADDRESS:port` with URL for ComfyUI |
@@ -111,17 +97,16 @@ To learn more about the serverless API see the [serverless section](#runpod-serv
 
 **Vast.​ai**
 
-- [comfyui:latest](https://link.ai-dock.org/template-vast-comfyui)
+- [comfyui:latest-cuda](https://link.ai-dock.org/template-vast-comfyui)
 
-- [comfyui:latest-jupyter](https://link.ai-dock.org/template-vast-comfyui-jupyter)
+- [comfyui:latest-rocm](https://link.ai-dock.org/template-vast-comfyui-rocm)
 
 ---
 
 **Runpod.​io**
 
-- [comfyui:latest](https://link.ai-dock.org/template-runpod-comfyui)
+- [comfyui:latest-cuda](https://link.ai-dock.org/template-runpod-comfyui)
 
-- [comfyui:latest-jupyter](https://link.ai-dock.org/template-runpod-comfyui-jupyter)
 
 ---
 
@@ -145,7 +130,7 @@ If passed in the payload these variables should be in lowercase.
 
 Incorrect or unset s3 credentials will not resut in job failure. You can still retrieve your images from the network volume.
 
-When used in serverless mode, the container will skip provisioning and will not update ComfyUI or the nodes on start so you must either ensure everyting you need is built into the image (see [Building Images](#building-images)) or first run the container with a network volume in GPU Cloud to get everything set up before launching your workers.
+When used in serverless mode, the container will skip provisioning and will not update ComfyUI or the nodes on start so you must either ensure everyting you need is built into the image (see [Building the Image](https://github.com/ai-dock/base-image/wiki/5.0-Building-the-Image)) or first run the container with a network volume in GPU Cloud to get everything set up before launching your workers.
 
 After launching a serverless worker, any instances of the container launched on the network volume in GPU cloud will also skip auto-updating. All updates must be done manually.
 
@@ -204,6 +189,5 @@ These handlers demonstrate how you can create a simple endpoint which will requi
 You can find example payloads for these handlers [here](https://github.com/ai-dock/comfyui/tree/main/build/COPY_ROOT/opt/serverless/docs/example_payloads)
 
 ---
-
 
 _The author ([@robballantyne](https://github.com/robballantyne)) may be compensated if you sign up to services linked in this document. Testing multiple variants of GPU images in many different environments is both costly and time-consuming; This helps to offset costs_
